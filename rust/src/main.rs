@@ -5,6 +5,7 @@ use std::ffi::OsString;
 use std::path::{Path, PathBuf};
 use std::process;
 
+/// Follow symlinks starting with `link`, until a real file is found.
 fn walk_symlink(link: &Path) -> PathBuf {
     let mut p = PathBuf::from(link);
 
@@ -18,6 +19,9 @@ fn walk_symlink(link: &Path) -> PathBuf {
     }
 }
 
+/// Exec a script `script` using an interpreter `relcmd` relative to script
+///
+/// If successful, do not return (the target process has been exec()ed).
 fn exec_relative(relcmd: OsString, script: OsString, argv: &[OsString]) -> Result<(), String> {
     let relcmd = Path::new(&relcmd);
     let origin_script = walk_symlink(Path::new(&script));
@@ -36,6 +40,7 @@ fn exec_relative(relcmd: OsString, script: OsString, argv: &[OsString]) -> Resul
     ))
 }
 
+/// Entry point for the program
 fn main() {
     let mut argv = env::args_os();
 
