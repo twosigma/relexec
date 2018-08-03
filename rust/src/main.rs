@@ -9,14 +9,11 @@ use std::process;
 fn walk_symlink(link: &Path) -> PathBuf {
     let mut p = PathBuf::from(link);
 
-    loop {
-        match p.read_link() {
-            Ok(dest) => {
-                p = dest;
-            }
-            Err(_) => break p,
-        }
-    }
+    while let Ok(dest) = p.read_link() {
+        p = p.parent().unwrap_or(&p).join(dest);
+    };
+
+    p
 }
 
 /// Exec a script `script` using an interpreter `relcmd` relative to script
@@ -46,7 +43,7 @@ fn main() {
 
     let result = match argv.len() {
         0...2 => {
-            let program = argv.next().unwrap_or_else(|| OsString::from("relexec"));
+            let program = argv.next().unwrap_or_else(|| "relexec".into());
             Err(format!(
                 "Usage: {} <interpreter> <file> ...",
                 Path::new(&program).display()
@@ -57,16 +54,13 @@ fn main() {
             exec_relative(
                 argv.next().unwrap(),
                 argv.next().unwrap(),
-                &argv.collect::<Vec<OsString>>(),
+                &argv.collect::<Vec<_>>(),
             )
         }
     };
 
-    match result {
-        Ok(_) => (),
-        Err(msg) => {
-            eprintln!("{}", msg);
-            process::exit(1);
-        }
+    if let Err(msg) = result {
+        eprintln!("{}", msg);
+        process::exit(1);
     }
 }
