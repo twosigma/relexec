@@ -5,3 +5,6 @@ authors = ["Daniel Pope <mauve@twosigma.com>"]
 
 [dependencies]
 exec = "0.3.1"
+
+[profile.release]
+lto = true
