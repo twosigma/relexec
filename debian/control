@@ -1,0 +1,24 @@
+Source: relexec
+Section: misc
+Priority: optional
+Maintainer: Geoffrey Thomas <geofft@twosigma.com>
+Build-Depends: debhelper (>= 10)
+Standards-Version: 3.9.8
+Homepage: https://github.com/twosigma/relexec
+VCS-Git: https://github.com/twosigma/relexec
+VCS-Browser: https://github.com/twosigma/relexec
+
+Package: relexec
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Helper command for relative shebangs
+ relexec provides "relative shebang" command to installed system-wide.
+ This allows scripts to be defined that run with interpreters in a
+ relative directory; these can then run wherever the interpreter/script
+ are found in the filesystem.
+ .
+ The intended usage in a script would be in the shebang line:
+     #!/usr/lib/relexec python3
+     <Python 3 code>
+ which would re-exec the file with an executable named python3 in the
+ same directory as the script.
