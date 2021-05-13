@@ -1,5 +1,7 @@
 # Relexec
 
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/twosigma/relexec/Run%20tests)
+
 `relexec` is a helper program to enable "relative shebangs".
 
 Relative shebangs are not natively supported on POSIX systems. Paths specified
