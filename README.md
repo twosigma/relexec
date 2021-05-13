@@ -1,6 +1,7 @@
 # Relexec
 
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/twosigma/relexec/Run%20tests)
+![GitHub](https://img.shields.io/github/license/twosigma/relexec)
 
 `relexec` is a helper program to enable "relative shebangs".
 
