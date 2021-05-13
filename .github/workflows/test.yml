@@ -1,0 +1,20 @@
+name: "Run tests"
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  dist:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+
+    - name: Build and run tests
+      run: python test_relexec.py
