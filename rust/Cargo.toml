@@ -2,9 +2,9 @@
 name = "relexec"
 version = "0.1.0"
 authors = ["Daniel Pope <mauve@twosigma.com>"]
+edition = "2018"
 
-[dependencies]
-exec = "0.3.1"
 
 [profile.release]
 lto = true
+panic = "abort"

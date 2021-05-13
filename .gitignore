@@ -1,3 +1,5 @@
 *.pyc
 *.pyo
-c/relexec
+*.swp
+/c/relexec
+/rust/target
