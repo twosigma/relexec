@@ -14,9 +14,9 @@ installed in a well-known path. `relexec` constructs a path relative to the
 script and execs it.
 
 This allows scripts to be defined that run with interpreters installed with the
-script. These can then run from anywhere in the filesystem, or moved to another
-location without breaking (as long as the relative path between the script and
-interpreter does not change).
+script. These can then run from anywhere in the filesystem, or be moved to
+another location without breaking (as long as the relative path between the
+script and interpreter does not change).
 
 Unlike other solutions to this problem, it is easy to programmatically rewrite
 shebangs to use relexec (or rewrite them back).
@@ -31,20 +31,22 @@ The intended usage is in the shebang line of a script:
 <Python 3.9 code>
 ```
 
-which would re-exec the file with an executable named `python3.9` in the same
-directory. Specifically executing `/path/to/file arg1 arg2` would run run
-relexec with this argv:
+which would define that the script should be executed with an executable
+named `python3.9` in the same directory as the script.
+
+Specifically, if the script is in `/path/to/file`, then executing
+`/path/to/file arg1 arg2` would run relexec with this command line:
 
 ```
 /usr/lib/relexec python3.9 /path/to/file arg1 arg2
 ```
-which it would transform to
+which relexec transforms to
 
 ```
 /path/to/python3.9 /path/to/file arg1 arg2
 ```
 
-and `exec()` the result.
+and `exec()`s the result.
 
 
 ## Installation
