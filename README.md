@@ -48,6 +48,10 @@ which relexec transforms to
 
 and `exec()`s the result.
 
+Relative interpreter paths containing spaces or tabs are rejected so that
+scripts behave consistently across kernels with different shebang parsing
+rules.
+
 
 ## Installation
 

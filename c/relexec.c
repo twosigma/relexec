@@ -94,6 +94,11 @@ int main(int argc, const char **argv) {
         return 2;
     }
 
+    if (strpbrk(argv[1], " \t")) {
+        fprintf(stderr, "relexec: interpreter path cannot contain whitespace\n");
+        return 2;
+    }
+
     if (strlen(argv[2]) > PATH_MAX) {
         fprintf(stderr, "relexec: path too long\n");
         return 2;
