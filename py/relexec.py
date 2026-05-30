@@ -11,11 +11,12 @@ except:
         )
     )
 
-extra_args = interp.split()
-interp = extra_args.pop(0)
+if ' ' in interp or '\t' in interp:
+    sys.exit('relexec: interpreter path cannot contain whitespace')
+
 targetdir = os.path.dirname(targetfile)
 while os.path.islink(targetfile):
     targetfile = os.path.join(targetdir, os.readlink(targetfile))
     targetdir = os.path.dirname(targetfile)
 target_interp = os.path.join(targetdir, interp)
-os.execv(target_interp, [target_interp] + extra_args + sys.argv[2:])
+os.execv(target_interp, [target_interp] + sys.argv[2:])

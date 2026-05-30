@@ -1,9 +1,9 @@
 use std::env;
 use std::ffi::OsString;
+use std::os::unix::ffi::OsStrExt;
+use std::os::unix::process::CommandExt;
 use std::path::{Path, PathBuf};
 use std::process::{self, Command};
-use std::os::unix::process::CommandExt;
-
 
 /// Follow symlinks starting with `link`, until a real file is found.
 fn walk_symlink(link: &Path) -> PathBuf {
@@ -11,7 +11,7 @@ fn walk_symlink(link: &Path) -> PathBuf {
 
     while let Ok(dest) = p.read_link() {
         p = p.parent().unwrap_or(&p).join(dest);
-    };
+    }
 
     p
 }
@@ -52,11 +52,13 @@ fn main() {
         }
         _ => {
             argv.next();
-            if let Err(msg) = exec_relative(
-                argv.next().unwrap(),
-                argv.next().unwrap(),
-                &argv.collect::<Vec<_>>(),
-            ) {
+            let relcmd = argv.next().unwrap();
+            if relcmd.as_bytes().iter().any(|b| *b == b' ' || *b == b'\t') {
+                eprintln!("relexec: interpreter path cannot contain whitespace");
+                process::exit(2);
+            }
+            if let Err(msg) = exec_relative(relcmd, argv.next().unwrap(), &argv.collect::<Vec<_>>())
+            {
                 eprintln!("{}", msg);
                 process::exit(127);
             }

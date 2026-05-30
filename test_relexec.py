@@ -109,6 +109,16 @@ class RelexecTests:
             f'{self.tmp}/interp {self.tmp}/script\n'
         )
 
+    def test_reject_interpreter_path_with_whitespace(self):
+        """Relative interpreter paths containing whitespace are rejected."""
+        for whitespace in (' ', '\t'):
+            with self.subTest(whitespace=repr(whitespace)):
+                result = subprocess.run(
+                    [self.relexec, f'interp{whitespace}arg', self.script],
+                    capture_output=True,
+                )
+                self.assertEqual(result.returncode, 2)
+
     def test_exec_failure(self):
         """If relexec exits with an error if execing the interpreter fails."""
         deactivated = self.tmp / 'interp~'
